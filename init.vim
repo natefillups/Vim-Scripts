@@ -1,149 +1,185 @@
-""" Personal Vim Configuration
+"" Personal ViM Config
 
-""" Vim-Plug <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-call plug#begin()
-
-" Aesthetics - Main
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'HerringtonDarkholme/yats.vim' "TS Syntax
-Plug 'bryanmylee/vim-colorscheme-icons'
-
-" Themes
-Plug 'altercation/solarized'
-Plug 'joshdick/onedark.vim'
-
-" QOL =================================================================
-Plug 'psliwka/vim-smoothie'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'Yggdroot/indentLine'
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'wellle/context.vim'
-Plug 'dkarter/bullets.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
-
-" Functionalities
-Plug 'preservim/nerdtree'
-Plug 'majutsushi/tagbar'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'jiangmiao/auto-pairs'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'alvan/vim-closetag'
-Plug 'sheerun/vim-polyglot'
-Plug 'scrooloose/nerdcommenter'
-
-call plug#end()
-
-""" Main Configurations <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+""" Main Configurations
 filetype plugin indent on
-set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
-set incsearch ignorecase smartcase hlsearch
-set wildmode=longest,list,full wildmenu
-set ruler laststatus=2 showcmd showmode
+set completeopt=menuone,noinsert,noselect
+set splitright
+set splitbelow
 set list listchars=trail:»,tab:»-
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 set wrap breakindent
 set encoding=utf-8
+set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
+set incsearch ignorecase smartcase hlsearch
 set textwidth=0
 set hidden
 set number
+set relativenumber
 set title
-set mouse=a
-
-""" Coloring <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-" Functions and autocmds to run whenever changing colorschemes
-function! TransparentBackground()
-    highlight Normal guibg=NONE ctermbg=NONE
-    highlight LineNr guibg=NONE ctermbg=NONE
-    set fillchars+=vert:\│
-    highlight VertSplit gui=NONE guibg=NONE guifg=#444444 cterm=NONE ctermbg=NONE ctermfg=gray
-endfunction
-
-function! DraculaPMenu()
-    highlight Pmenu guibg=#363948
-    highlight PmenuSbar guibg=#363948
-endfunction
-
-augroup MyColors
-    autocmd!
-    autocmd ColorScheme "OneDark" call ColorOnedark()
-augroup END
-
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
 syntax on
-colorscheme onedark
 
-" Enable True Color Support (ensure you're using a 256-color enabled $TERM, e.g. xterm-256color)
-set termguicolors
-" OneDark ====================================================
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
+" Snippets
+noremap <F8> <ESC> :w <CR> :!g++ -std=c++17 -Wall -g<CR>:packadd termdebug<CR>:Termdebug a.out<CR>
+inoremap <F8> <ESC> :w <CR> :!g++ -std=c++17 -Wall -g<CR>:packadd termdebug<CR>:Termdebug a.out<CR>
+
+noremap <F9> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+inoremap <F9> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+
+"noremap <F10> <ESC> :w <CR> :!clang++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+"inoremap <F10> <ESC> :w <CR> :!clang++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+
+noremap <F10> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< < main<CR>
+inoremap <F10> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o "%<" "%" && "./%<" < main<CR>
+
+" Buffer Setup
+nnoremap <F5> :buffers<CR>:buffer<Space>
+set wildchar=<Tab> wildmenu wildmode=full
+
+
+
+if (has("termguicolors"))
     set termguicolors
-  endif
 endif
 
-function! ColorOnedark() 
-    let g:airline_theme='OneDark'
-    color onedark
-endfunction
+let mapleader = " "
+nnoremap <leader>v :e $MYVIMRC<CR>
+
+""" Vim-Plug
+call plug#begin('~/.config/nvim/plugged')
+
+""" VIM Plugins
+
+" Aesthetics - Main
+Plug 'jiangmiao/auto-pairs'
+Plug 'bryanmylee/vim-colorscheme-icons'             " File Icons
+Plug 'tomasiser/vim-code-dark'
+Plug 'vim-airline/vim-airline'                      " VIM Airline
+Plug 'vim-airline/vim-airline-themes'
 
 
-""" Remaps <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-let mapleader=","
-nmap <leader>v <C-w>v<C-w>l:terminal<CR>:set nonumber<CR><S-a> 	"Terminal
-nmap <leader>q :NERDTreeToggle<CR> "Toggle NerdTree
-nmap \\ :NERDTreeToggle<CR> "Toggle NerdTree
-nmap <leader>w :TagbarToggle<CR> "Toggle Tagbar
-nmap \| :TagbarToggle<CR> "Toggle Tagbar
+" Quality of Life
+Plug 'tpope/vim-surround'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'sheerun/vim-polyglot'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdcommenter'
+Plug 'majutsushi/tagbar'
 
-" Copy/Paste
-vnoremap <C-c> "*y :let @+=@*<CR>
-map <C-v> "*P
+""" LUA Configurations
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'applejwjcat/dashboard-nvim'
 
-" Special
-nmap <leader>h :RainbowParentheses!!<CR>
-nmap <leader>t :call TrimWhitespace()<CR>
+""" NVIM Plugins
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-""" Filetype-Specific Configurations <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+call plug#end()
 
-" HTML, XML, Jinja
-autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
-autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
-autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
+" require plugin configs
+lua require('itani')
 
-" Markdown and Journal
-autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
+""" Plugins
+""
+" Colorscheme
+colorscheme codedark
 
-""" Plugin Exclusive <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-" Neovim :Terminal =========================================================
-tmap <Esc> <C-\><C-n>
-tmap <C-w> <Esc><C-w>
-"tmap <C-d> <Esc>:q<CR>
-autocmd BufWinEnter,WinEnter term://* startinsert
-autocmd BufLeave term://* stopinsert
 
-" coc.vim START ============================================================
+
+
+
+" VIM Airline
+if !exists('g:airline_symbols')
+    let g:airline_symbols={}
+endif
+
+let g:airline_theme='onedark'
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#formatter = 'jsformatter'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+
+let g:airline_powerline_fonts=1
+
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.dirty='⚡'
+
+"NVIM Dashboard
+let g:dashboard_default_executive = 'telescope'
+let g:dashboard_custom_header = [
+    \' ██▓███   ██░ ██  ██▓ ██▓     ██▓     ██▓ ██▓███    ██████ ',
+    \'▓██░  ██▒▓██░ ██▒▓██▒▓██▒    ▓██▒    ▓██▒▓██░  ██▒▒██    ▒ ',
+    \'▓██░ ██▓▒▒██▀▀██░▒██▒▒██░    ▒██░    ▒██▒▓██░ ██▓▒░ ▓██▄   ',
+    \'▒██▄█▓▒ ▒░▓█ ░██ ░██░▒██░    ▒██░    ░██░▒██▄█▓▒ ▒  ▒   ██▒',
+    \'▒██▒ ░  ░░▓█▒░██▓░██░░██████▒░██████▒░██░▒██▒ ░  ░▒██████▒▒',
+    \'▒▓▒░ ░  ░ ▒ ░░▒░▒░▓  ░ ▒░▓  ░░ ▒░▓  ░░▓  ▒▓▒░ ░  ░▒ ▒▓▒ ▒ ░',
+    \'░▒ ░      ▒ ░▒░ ░ ▒ ░░ ░ ▒  ░░ ░ ▒  ░ ▒ ░░▒ ░     ░ ░▒  ░ ░',
+    \'░░        ░  ░░ ░ ▒ ░  ░ ░     ░ ░    ▒ ░░░       ░  ░  ░  ',
+    \'          ░  ░  ░ ░      ░  ░    ░  ░ ░                 ░  ',
+    \]
+
+
+let g:mapleader="\<Space>"
+nmap <Leader>ss :<C-u>SessionSave<CR>
+nmap <Leader>sl :<C-u>SessionLoad<CR>
+nnoremap <silent> <Leader>fh :Telescope oldfiles<CR>
+nnoremap <silent> <Leader>ff :Telescope find_files<CR>
+nnoremap <silent> <Leader>tc :Telescope colorscheme<CR>
+nnoremap <silent> <Leader>fa :Telescope grep_string<CR>
+nnoremap <silent> <Leader>fb :Telescope marks<CR>
+nnoremap <silent> <Leader>cf :DashboardNewFile<CR>
+let g:indentLine_fileTypeExclude = ['dashboard']
+
+let g:dashboard_custom_shortcut={
+  \ 'last_session'       : 'SPC s l',
+  \ 'find_history'       : 'SPC f h',
+  \ 'find_file'          : 'SPC f f',
+  \ 'new_file'           : 'SPC c f',
+  \ 'change_colorscheme' : 'SPC t c',
+  \ 'find_word'          : 'SPC f a',
+  \ 'book_marks'         : 'SPC f b',
+  \ }
+
+" fzf.vim
+nnoremap <leader><space> :GFiles<CR>
+" vim-fugitive
+nnoremap <leader>gg :G<CR>
+
+" Telescope
+" NERD Tree
+nnoremap \\ :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Tagbar
+let g:tagbar_width = 30
+nmap \| :TagbarToggle<CR>
+
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -166,11 +202,11 @@ endif
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ CheckBackspace() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
@@ -199,15 +235,13 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -229,86 +263,67 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" NERDTree ====================================================================
-let NERDTreeShowHidden=1
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Airline
-let g:airline_powerline_fonts=1
-let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
-let g:airline_section_warning = ''
-"let g:airline#extensions#tabline#enabled = 1 " Uncomment to display buffer tabline above
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Tagbar =====================================================================
-let g:tagbar_width = 30
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" fzf-vim ====================================================================
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'Type'],
-  \ 'border':  ['fg', 'Constant'],
-  \ 'prompt':  ['fg', 'Character'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
-" Bat theme for syntax coloring when viewing files in fzf
-let $BAT_THEME='base16'
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
 
-" Supertab ===================================================================
-let g:SuperTabDefaultCompletionType = "<C-n>"
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" EasyAlign ==================================================================
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocActionAsync('format')
 
-" indentLine ==============================================================
-let g:indentLine_char = '▏'
-let g:indentLine_defaultGroup = 'NonText'
-" Disable indentLine from concealing json and markdown syntax (e.g. ```)
-let g:vim_json_syntax_conceal = 0
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_conceal_code_blocks = 0
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Startify ================================================================
-let g:startify_fortune_use_unicode = 1
-
-" Startify + NERDTree on start when no file is specified
-autocmd VimEnter *
-    \   if !argc()
-    \ |   Startify
-    \ |   NERDTree
-    \ |   wincmd w
-    \ | endif
-
-" signify =================================================================
-let g:signify_sign_add = '│'
-let g:signify_sign_delete = '│'
-let g:signify_sign_change = '│'
-hi DiffDelete guifg=#ff5555 guibg=none
-
-" FixCursorHold for better performance ====================================
-let g:cursorhold_updatetime = 100
-
-" context.vim ===========================================================
-let g:context_nvim_no_redraw =1
-
-""" Custom Functions <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-" Trim Whitespaces
-function! TrimWhitespace()
-    let l:save = winsaveview()
-    %s/\\\@<!\s\+$//e
-    call winrestview(l:save)
-endfunction
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>"

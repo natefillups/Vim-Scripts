@@ -1,0 +1,20 @@
+{
+    "diagnostic.errorSign": "✘",
+    "diagnostic.warningSign": "",
+    "diagnostic.infoSign": "",
+    "diagnostic.hintSign": "•",
+    "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/14.0.3/clangd_14.0.3/bin/clangd",
+
+    "languageserver": {
+    "ccls": {
+        "command": "ccls",
+        "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+        "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
+        "initializationOptions": {
+            "cache": {
+            "directory": "/tmp/ccls"
+            }
+        }
+    }
+    }
+}
